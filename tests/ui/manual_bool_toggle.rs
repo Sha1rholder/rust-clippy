@@ -1,0 +1,90 @@
+#![warn(clippy::manual_bool_toggle)]
+
+struct Flags {
+    enabled: bool,
+    other: bool,
+}
+
+#[clippy::msrv = "1.100"]
+const fn flip(flag: &mut bool) {
+    *flag = !*flag;
+    //~^ manual_bool_toggle
+}
+
+fn places(mut flag: bool, flags: &mut Flags, bits: &mut [bool], i: usize) {
+    flag = !flag;
+    //~^ manual_bool_toggle
+    flags.enabled = !flags.enabled;
+    //~^ manual_bool_toggle
+    bits[i] = !bits[i];
+    //~^ manual_bool_toggle
+
+    flags.enabled = !flags.other;
+    bits[0] = !bits[1];
+}
+
+fn side_effects(bits: &mut [bool], mut next: impl FnMut() -> usize) {
+    bits[next()] = !bits[next()];
+}
+
+fn overloaded<T: std::ops::DerefMut<Target = bool>, U: std::ops::IndexMut<usize, Output = bool>>(
+    mut ptr: T,
+    mut indexed: U,
+) {
+    *ptr = !*ptr;
+    indexed[0] = !indexed[0];
+}
+
+fn other_types<T: std::ops::Not<Output = T> + Copy>(mut n: u32, mut value: T) {
+    n = !n;
+    value = !value;
+}
+
+macro_rules! flip {
+    ($x:expr) => {
+        $x = !$x
+    };
+}
+
+fn from_macro(mut flag: bool) {
+    flip!(flag);
+}
+
+#[clippy::msrv = "1.99"]
+fn older_msrv(flag: &mut bool) {
+    *flag = !*flag;
+}
+
+fn inferred_receiver() {
+    let flip = |flag: &mut _| {
+        *flag = !*flag;
+        //~^ manual_bool_toggle
+    };
+    flip(&mut false);
+
+    let mut flag = Default::default();
+    flag = !flag;
+    //~^ manual_bool_toggle
+    let _: bool = flag;
+}
+
+macro_rules! first {
+    ($first:expr, $second:expr) => {
+        $first
+    };
+}
+
+fn forwarded_places(a: &mut bool, b: &mut bool) {
+    *first!(a, b) = !*first!(a, b);
+    *first!(a, b) = !*a;
+    *a = !*first!(a, b);
+    first!(*a, *b) = !*a;
+    *a = !first!(*a, *b);
+}
+
+fn xor_assign(mut flag: bool) {
+    flag ^= true;
+    flag ^= false;
+}
+
+fn main() {}

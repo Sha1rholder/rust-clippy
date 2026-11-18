@@ -831,7 +831,7 @@ fn text_has_safety_comment(
             if let Some(doc) = line.strip_prefix("///").or_else(|| line.strip_prefix("//!"))
                 && doc.trim_start().starts_with("```")
             {
-                in_codeblock = !in_codeblock;
+                in_codeblock.toggle();
             }
 
             if !in_codeblock && let Some(safety_pos) = line.to_ascii_uppercase().find("SAFETY:") {

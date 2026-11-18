@@ -1,0 +1,11 @@
+error: manual implementation of `bool::toggle`
+  --> tests/ui/manual_bool_toggle_trait.rs:14:5
+   |
+LL |     flag = !flag;
+   |     ^^^^^^^^^^^^ help: use: `::core::primitive::bool::toggle(&mut flag)`
+   |
+   = note: `-D clippy::manual-bool-toggle` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::manual_bool_toggle)]`
+
+error: aborting due to 1 previous error
+

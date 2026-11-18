@@ -7401,6 +7401,7 @@ Released 2018-09-13
 [`manual_async_fn`]: https://clippy.rust-lang.org/main/index.html#manual_async_fn
 [`manual_bit_width`]: https://clippy.rust-lang.org/main/index.html#manual_bit_width
 [`manual_bits`]: https://clippy.rust-lang.org/main/index.html#manual_bits
+[`manual_bool_toggle`]: https://clippy.rust-lang.org/main/index.html#manual_bool_toggle
 [`manual_c_str_literals`]: https://clippy.rust-lang.org/main/index.html#manual_c_str_literals
 [`manual_checked_ops`]: https://clippy.rust-lang.org/main/index.html#manual_checked_ops
 [`manual_clamp`]: https://clippy.rust-lang.org/main/index.html#manual_clamp

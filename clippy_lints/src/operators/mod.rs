@@ -14,6 +14,7 @@ mod identity_op;
 mod integer_division;
 mod integer_division_remainder_used;
 mod invalid_upcast_comparisons;
+mod manual_bool_toggle;
 mod manual_div_ceil;
 mod manual_is_multiple_of;
 mod manual_isolate_lowest_one;
@@ -669,6 +670,32 @@ declare_clippy_lint! {
 
 declare_clippy_lint! {
     /// ### What it does
+    /// Checks for assignments of the form `flag = !flag` on booleans.
+    ///
+    /// ### Why is this bad?
+    /// [`bool::toggle`](https://doc.rust-lang.org/std/primitive.bool.html#method.toggle)
+    /// expresses the intent directly and avoids repeating the assignment target.
+    ///
+    /// ### Example
+    /// ```no_run
+    /// fn flip(flag: &mut bool) {
+    ///     *flag = !*flag;
+    /// }
+    /// ```
+    /// Use instead:
+    /// ```no_run
+    /// fn flip(flag: &mut bool) {
+    ///     flag.toggle();
+    /// }
+    /// ```
+    #[clippy::version = "1.102.0"]
+    pub MANUAL_BOOL_TOGGLE,
+    pedantic,
+    "assigning the negation of a boolean to itself"
+}
+
+declare_clippy_lint! {
+    /// ### What it does
     /// Checks for an expression like `(x + (y - 1)) / y` which is a common manual reimplementation
     /// of `x.div_ceil(y)`.
     ///
@@ -1045,6 +1072,7 @@ impl_lint_pass!(Operators => [
     INTEGER_DIVISION,
     INTEGER_DIVISION_REMAINDER_USED,
     INVALID_UPCAST_COMPARISONS,
+    MANUAL_BOOL_TOGGLE,
     MANUAL_DIV_CEIL,
     MANUAL_ISOLATE_LOWEST_ONE,
     MANUAL_IS_MULTIPLE_OF,
@@ -1062,6 +1090,7 @@ impl_lint_pass!(Operators => [
 
 pub struct Operators {
     arithmetic_context: numeric_arithmetic::Context,
+    has_competing_toggle: Option<bool>,
     verbose_bit_mask_threshold: u64,
     modulo_arithmetic_allow_comparison_to_zero: bool,
     msrv: Msrv,
@@ -1071,6 +1100,7 @@ impl Operators {
     pub fn new(conf: &'static Conf) -> Self {
         Self {
             arithmetic_context: numeric_arithmetic::Context::default(),
+            has_competing_toggle: None,
             verbose_bit_mask_threshold: conf.verbose_bit_mask_threshold,
             modulo_arithmetic_allow_comparison_to_zero: conf.allow_comparison_to_zero,
             msrv: conf.msrv.into(),
@@ -1133,6 +1163,7 @@ impl<'tcx> LateLintPass<'tcx> for Operators {
             },
             ExprKind::Assign(lhs, rhs, _) => {
                 assign_op_pattern::check(cx, e, lhs, rhs, self.msrv);
+                manual_bool_toggle::check(cx, e, lhs, rhs, self.msrv, &mut self.has_competing_toggle);
                 self_assignment::check(cx, e, lhs, rhs);
                 new_instead_of_clear::check(cx, e, lhs, rhs);
             },

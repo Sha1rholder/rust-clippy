@@ -630,6 +630,7 @@ pub static LINTS: &[&::declare_clippy_lint::LintInfo] = &[
     crate::operators::INTEGER_DIVISION_INFO,
     crate::operators::INTEGER_DIVISION_REMAINDER_USED_INFO,
     crate::operators::INVALID_UPCAST_COMPARISONS_INFO,
+    crate::operators::MANUAL_BOOL_TOGGLE_INFO,
     crate::operators::MANUAL_DIV_CEIL_INFO,
     crate::operators::MANUAL_IS_MULTIPLE_OF_INFO,
     crate::operators::MANUAL_ISOLATE_LOWEST_ONE_INFO,

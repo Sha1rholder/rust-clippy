@@ -1,0 +1,19 @@
+#![warn(clippy::manual_bool_toggle)]
+#![no_std]
+#![crate_type = "lib"]
+
+trait Toggle {
+    fn toggle(self);
+}
+
+impl Toggle for bool {
+    fn toggle(self) {}
+}
+
+const fn flip(mut flag: bool) -> bool {
+    ::core::primitive::bool::toggle(&mut flag);
+    //~^ manual_bool_toggle
+    flag
+}
+
+const _: () = assert!(flip(false));

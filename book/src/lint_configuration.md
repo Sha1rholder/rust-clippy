@@ -973,6 +973,7 @@ The minimum rust version that the project supports. Defaults to the `rust-versio
 * [`lines_filter_map_ok`](https://clippy.rust-lang.org/main/index.html#lines_filter_map_ok)
 * [`manual_abs_diff`](https://clippy.rust-lang.org/main/index.html#manual_abs_diff)
 * [`manual_bits`](https://clippy.rust-lang.org/main/index.html#manual_bits)
+* [`manual_bool_toggle`](https://clippy.rust-lang.org/main/index.html#manual_bool_toggle)
 * [`manual_c_str_literals`](https://clippy.rust-lang.org/main/index.html#manual_c_str_literals)
 * [`manual_clamp`](https://clippy.rust-lang.org/main/index.html#manual_clamp)
 * [`manual_div_ceil`](https://clippy.rust-lang.org/main/index.html#manual_div_ceil)

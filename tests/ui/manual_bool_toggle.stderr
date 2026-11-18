@@ -1,0 +1,41 @@
+error: manual implementation of `bool::toggle`
+  --> tests/ui/manual_bool_toggle.rs:10:5
+   |
+LL |     *flag = !*flag;
+   |     ^^^^^^^^^^^^^^ help: use: `flag.toggle()`
+   |
+   = note: `-D clippy::manual-bool-toggle` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::manual_bool_toggle)]`
+
+error: manual implementation of `bool::toggle`
+  --> tests/ui/manual_bool_toggle.rs:15:5
+   |
+LL |     flag = !flag;
+   |     ^^^^^^^^^^^^ help: use: `flag.toggle()`
+
+error: manual implementation of `bool::toggle`
+  --> tests/ui/manual_bool_toggle.rs:17:5
+   |
+LL |     flags.enabled = !flags.enabled;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: use: `flags.enabled.toggle()`
+
+error: manual implementation of `bool::toggle`
+  --> tests/ui/manual_bool_toggle.rs:19:5
+   |
+LL |     bits[i] = !bits[i];
+   |     ^^^^^^^^^^^^^^^^^^ help: use: `bits[i].toggle()`
+
+error: manual implementation of `bool::toggle`
+  --> tests/ui/manual_bool_toggle.rs:60:9
+   |
+LL |         *flag = !*flag;
+   |         ^^^^^^^^^^^^^^ help: use: `::std::primitive::bool::toggle(flag)`
+
+error: manual implementation of `bool::toggle`
+  --> tests/ui/manual_bool_toggle.rs:66:5
+   |
+LL |     flag = !flag;
+   |     ^^^^^^^^^^^^ help: use: `::std::primitive::bool::toggle(&mut flag)`
+
+error: aborting due to 6 previous errors
+

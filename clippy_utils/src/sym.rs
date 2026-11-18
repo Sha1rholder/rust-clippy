@@ -622,6 +622,7 @@ generate! {
     to_path_buf,
     to_string_method,
     to_uppercase,
+    toggle,
     tokio,
     trim,
     trim_end,

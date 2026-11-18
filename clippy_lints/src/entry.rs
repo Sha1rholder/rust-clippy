@@ -261,7 +261,7 @@ fn try_parse_contains<'tcx>(cx: &LateContext<'_>, expr: &'tcx Expr<'_>) -> Optio
     let mut negated = false;
     let expr = peel_hir_expr_while(expr, |e| match e.kind {
         ExprKind::Unary(UnOp::Not, e) => {
-            negated = !negated;
+            negated.toggle();
             Some(e)
         },
         _ => None,

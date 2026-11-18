@@ -691,6 +691,7 @@ define_Conf! {
         lines_filter_map_ok,
         manual_abs_diff,
         manual_bits,
+        manual_bool_toggle,
         manual_c_str_literals,
         manual_clamp,
         manual_div_ceil,
@@ -871,7 +872,7 @@ pub fn sanitize_explanation(raw_docs: &str) -> String {
                 explanation += line;
                 explanation.push('\n');
             }
-            in_code = !in_code;
+            in_code.toggle();
         } else if !(in_code && line.starts_with("# ")) {
             explanation += line;
             explanation.push('\n');
